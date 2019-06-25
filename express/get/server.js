@@ -7,6 +7,7 @@ app.get('/index.html',function(req,res) {
 })
 
 app.get('/getform',function(req,res) {
+    // 输出 JSON 格式
     var response = {
         'username':req.query.username,
         'password':req.query.password,
