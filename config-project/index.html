@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Form</title>
+</head>
+<body>
+	<form action="http://localhost:5555/bhgConfig" method="POST"  target="nm_iframe">
+
+		<label for="name">用户名:</label>
+		<input type="text" id="name" name='userName' value="admin">
+		<br>
+		<label for="textarea">配置内容json字符串:</label>
+		<textarea rows="30" cols="100" type="textarea" id="textarea" name='json'></textarea>
+		<br>
+		<input type="submit" value="提交" >
+	</form>
+
+	<iframe 
+		id="id_iframe" name="nm_iframe" 
+		style="margin-top:20px;width: 1000px;height: 500px;"
+	></iframe> 
+
+
+	<script>
+		var textarea = `
+			"{
+				"axios": {
+					"baseURL": function({
+						_req
+					}) {
+						if (_req.header.origin == 'http://oss-bulletin.test.glsx.com.cn') {
+							return "http://qcdidicb.glsx.net:7060"
+						} else if (_req.header.origin.startsWith('http://192.168')) {
+							return "http://192.168.3.206:8923"
+						} else if (_req.header.origin.startsWith('http://oss-bulletin.glsx.com.cn')) {
+							return "http://didicb.glsx.com.cn"
+						} else if (_req.header.origin.startsWith('http://localhost')) {
+							return "http://qcdidicb.glsx.net:7060"
+						} else {
+							return "http://192.168.3.171:7300/mock/5cb0021e4bd1a108f923bf92/oss-notice/"
+						}
+					},
+					"fileUploadURL": function({
+						_req
+					}) {
+						if (_req.header.origin == 'http://oss-bulletin.test.glsx.com.cn') {
+							return "http://dj.test.glsx.com.cn/web-dj-site"
+						} else if (_req.header.origin.startsWith('http://192.168')) {
+							return "http://192.168.3.206:8923"
+						} else if (_req.header.origin.startsWith('http://oss-bulletin.glsx.com.cn')) {
+							return "http://gps.cgacar.com/web-dj-site"
+						} else if (_req.header.origin.startsWith('http://localhost')) {
+							return "http://192.168.2.89:8091"
+						} else {
+							return "http://192.168.3.171:7300/mock/5cb0021e4bd1a108f923bf92/oss-notice/"
+						}
+					},
+					"whiteList": [
+						'router',
+						'router?method=glsx.accounts.admin.bulletin.create',
+						'router?method=glsx.accounts.admin.bulletin.create.check',
+						'glsx.accounts.admin.bulletin.search',
+						'glsx.accounts.bulletin.push.search',
+						'glsx.accounts.admin.bulletin.complete.search',
+						'glsx.accounts.bulletin.publish.cancel',
+						'glsx.accounts.admin.merchant.group.dict',
+						'glsx.accounts.admin.merchant.getall',
+						'glsx.accounts.bulletin.message.detail',
+						'glsx.accounts.admin.bulletin.create',
+						'glsx.accounts.admin.bulletin.detail'
+					],
+					"timeout": 15000,
+					"result": {
+						"data_key": "data",
+						"message_key": "message",
+						"code_key": "code",
+						"code_success_value": "0",
+						"code_message_map": {}
+					}
+				},
+				"css_url": 'http://oss-config.test.glsx.com.cn/mock/5be17454f31545347559d499/config/index.css'
+			}"
+		`;
+
+		var textarea2 = {
+  "axios": {
+    "baseURL": function({
+      _req
+    }) {
+      if (_req.header.origin == 'http://oss-bulletin.test.glsx.com.cn') {
+        return "http://qcdidicb.glsx.net:7060"
+      } else if (_req.header.origin.startsWith('http://192.168')) {
+        return "http://192.168.3.206:8923"
+      } else if (_req.header.origin.startsWith('http://oss-bulletin.glsx.com.cn')) {
+        return "http://didicb.glsx.com.cn"
+      } else if (_req.header.origin.startsWith('http://localhost')) {
+        return "http://qcdidicb.glsx.net:7060"
+      } else {
+        return "http://192.168.3.171:7300/mock/5cb0021e4bd1a108f923bf92/oss-notice/"
+      }
+    },
+    "fileUploadURL": function({
+      _req
+    }) {
+      if (_req.header.origin == 'http://oss-bulletin.test.glsx.com.cn') {
+        return "http://dj.test.glsx.com.cn/web-dj-site"
+      } else if (_req.header.origin.startsWith('http://192.168')) {
+        return "http://192.168.3.206:8923"
+      } else if (_req.header.origin.startsWith('http://oss-bulletin.glsx.com.cn')) {
+        return "http://gps.cgacar.com/web-dj-site"
+      } else if (_req.header.origin.startsWith('http://localhost')) {
+        return "http://192.168.2.89:8091"
+      } else {
+        return "http://192.168.3.171:7300/mock/5cb0021e4bd1a108f923bf92/oss-notice/"
+      }
+    },
+    "whiteList": [
+      'router',
+      'router?method=glsx.accounts.admin.bulletin.create',
+      'router?method=glsx.accounts.admin.bulletin.create.check',
+      'glsx.accounts.admin.bulletin.search',
+      'glsx.accounts.bulletin.push.search',
+      'glsx.accounts.admin.bulletin.complete.search',
+      'glsx.accounts.bulletin.publish.cancel',
+      'glsx.accounts.admin.merchant.group.dict',
+      'glsx.accounts.admin.merchant.getall',
+      'glsx.accounts.bulletin.message.detail',
+      'glsx.accounts.admin.bulletin.create',
+      'glsx.accounts.admin.bulletin.detail'
+    ],
+    "timeout": 15000,
+    "result": {
+      "data_key": "data",
+      "message_key": "message",
+      "code_key": "code",
+      "code_success_value": "0",
+      "code_message_map": {}
+    }
+  },
+  "css_url": 'http://oss-config.test.glsx.com.cn/mock/5be17454f31545347559d499/config/index.css'
+}
+		document.getElementById('textarea').value= textarea2;
+	</script>
+</body>
+</html>
