@@ -7,29 +7,10 @@
     "dev": "node server.js"
   },
   "dependencies": {
-    "_bignumber.js@7.2.1@bignumber.js": "^7.2.1",
-    "_core-util-is@1.0.2@core-util-is": "^1.0.2",
-    "_inherits@2.0.4@inherits": "^2.0.4",
-    "_isarray@1.0.0@isarray": "^1.0.0",
-    "_mysql@2.17.1@mysql": "^2.17.1",
-    "_process-nextick-args@2.0.1@process-nextick-args": "^2.0.1",
-    "_readable-stream@2.3.6@readable-stream": "^2.3.6",
-    "_safe-buffer@5.1.2@safe-buffer": "^5.1.2",
-    "_sqlstring@2.3.1@sqlstring": "^2.3.1",
-    "_string_decoder@1.1.1@string_decoder": "^1.1.1",
-    "_util-deprecate@1.0.2@util-deprecate": "^1.0.2",
     "express": "^4.17.1",
     "mysql": "^2.17.1"
   },
   "devDependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/GUAPO-CN/nodejsSd.git"
-  },
   "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/GUAPO-CN/nodejsSd/issues"
-  },
-  "homepage": "https://github.com/GUAPO-CN/nodejsSd#readme"
+  "license": "ISC"
 }
