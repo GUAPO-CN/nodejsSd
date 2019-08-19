@@ -20,7 +20,7 @@ function initObj(obj,_req){
 				_req.header = _req.headers;
 				let result = value({_req})
 				console.log(result,'initObj value result'); 
-				dataObj[key] = result;
+				obj[key] = result;
 			}
 		}
 	}
