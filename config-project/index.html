@@ -9,9 +9,10 @@
 </head>
 <body>
 	<h1>ACE</h1>
-	<div id="editor" style="height: 800px;width:1000px;"></div>
+	<div id="editor" style="height: 800px;width:800px;"></div>
 
-	<form action="http://localhost:5555/bhgConfig" method="POST"  target="nm_iframe">
+	<h1>TEXTAREA</h1>
+	<form action="http://localhost:5555/addConfig" method="POST"  target="nm_iframe">
 		<label for="name">用户名:</label>
 		<input type="text" id="name" name='userName' value="admin">
 		<br>
@@ -23,7 +24,7 @@
 
 	<iframe 
 		id="id_iframe" name="nm_iframe" 
-		style="margin-top:20px;width: 500px;height: 500px;"
+		style="margin-top:20px;width: 800px;height: 500px;"
 	></iframe> 
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.6/ace.js" type="text/javascript" charset="utf-8"></script>
