@@ -1,0 +1,11 @@
+启动本地easy-mock
+cd F:\SVN_Repo\car-server-web\git\mock\easy-mock-dev
+npm run dev
+
+启动本地mongodb可视化界面adminMongo
+cd F:\SVN_Repo\car-server-web\git\mongodb\adminMongo
+npm run start
+
+启动当前测试项目--config-project
+cd F:\SVN_Repo\car-server-web\git\nodejs\config-project
+node ./service.js

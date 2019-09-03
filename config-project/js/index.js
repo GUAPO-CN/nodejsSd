@@ -187,7 +187,7 @@
 
 		const aceEditor = new AceEditor({
 			'ace':ace,
-			'url':'http://localhost:5555/addConfig',
+			'url':'http://localhost:5555/config/addConfig',
 			'callback':(res) => {
 				document.getElementById('id_iframe').contentWindow.document.body.innerHTML = res;
 				console.log(res,'ressss');
