@@ -5,6 +5,7 @@ const express =require('express');
 
 const 	app = express(),
 		configRoute = require('./routes/config');
+		userRoute = require('./routes/user');
 //设置所有请求的 跨域请求
 	app.all('*',function(req,res,next){
 		res.header("Access-Control-Allow-Origin", "*");
@@ -15,7 +16,8 @@ const 	app = express(),
 			next();
 	})
 app.use('/js',express.static('js'))
-app.use('/config',configRoute)
+// app.use('/config',configRoute)
+app.use('/user',userRoute)
 // app.use(bodyParser.json())
 
 

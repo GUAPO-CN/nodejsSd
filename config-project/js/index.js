@@ -63,7 +63,8 @@
 		function AceEditor(params){
 			if(this instanceof AceEditor){
 				this.ace = params.ace
-				this.editStr = ''
+				this.editStr = 'xxx'
+				this.isPost = true
 				this.callback = params.callback 
 				this.URL = params.url
 
@@ -96,7 +97,10 @@
 									// console.log(editor.getValue(),'editor.getValue()');
 									this.editStr = editor.getValue()
 									this._eslint()
-									this.submitText(this.editStr)
+									alert(this.isPost)
+									if(this.isPost){
+										this.submitText(this.editStr)
+									}
 								}
 							})
 							// editor.setValue(JSON.stringify(textarea2))
@@ -107,18 +111,22 @@
 						try {
 							const value = (new Function(`return ${this.editStr}`))() // eslint-disable-line 将editStr 动态解析执行字符串
 							if (!value) {
+								this.isPost = false 
 								alert('不能为空')
 								return
 							} else if (typeof value !== 'object') {
+								this.isPost = false
 								throw 'new Error()'
 							}
 						} catch (error) {
 							if (!/^http(s)?:\/\//.test(this.editStr)) {
 								console.log(error,'error');
+								this.isPost = false
 								alert('请输入对象格式')
 								return
 							}
 						}
+						this.isPost = true 
 					}
 				}
 				if(typeof(this.submitText) != 'function'){
@@ -187,7 +195,7 @@
 
 		const aceEditor = new AceEditor({
 			'ace':ace,
-			'url':'http://localhost:5555/config/addConfig',
+			'url':'http://localhost:5555/config/add',
 			'callback':(res) => {
 				document.getElementById('id_iframe').contentWindow.document.body.innerHTML = res;
 				console.log(res,'ressss');

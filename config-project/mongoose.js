@@ -58,10 +58,10 @@ MongoClient.connect(url,
           //   client.close()
           // })
       //排序指定集合中的数据
-        dbo.collection('configList').find().limit(2).toArray((err,result)=>{
-          if(err) throw err
-          console.log(result,'result ');
-          client.close()
-        })
+        // dbo.collection('configList').find().limit(2).toArray((err,result)=>{
+        //   if(err) throw err
+        //   console.log(result,'result ');
+        //   client.close()
+        // })
   }
 );
