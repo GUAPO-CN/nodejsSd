@@ -1,11 +1,16 @@
-Æô¶¯±¾µØeasy-mock
+ï»¿å¯åŠ¨æœ¬åœ°easy-mock
 cd F:\SVN_Repo\car-server-web\git\mock\easy-mock-dev
 npm run dev
 
-Æô¶¯±¾µØmongodb¿ÉÊÓ»¯½çÃæadminMongo
+å¯åŠ¨æœ¬åœ°mongodbå¯è§†åŒ–ç•Œé¢adminMongo
 cd F:\SVN_Repo\car-server-web\git\mongodb\adminMongo
 npm run start
 
-Æô¶¯µ±Ç°²âÊÔÏîÄ¿--config-project
-cd F:\SVN_Repo\car-server-web\git\nodejs\config-project
-node ./service.js
+ä½¿ç”¨æ–¹æ³•ï¼š
+  1.mongodb
+    æœ¬åœ°å®‰è£…mongodbï¼Œé»˜è®¤é…ç½®åœ°å€mongodb://localhost:27017ï¼Œå®‰è£…roboæŸ¥çœ‹.
+  2.configé¡¹ç›®
+    1.å¯åŠ¨å½“å‰æµ‹è¯•é¡¹ç›®--config-project
+      cd F:\SVN_Repo\car-server-web\git\nodejs\config-project
+      node ./service.js
+    2.è®¿é—® http://localhost:5555/

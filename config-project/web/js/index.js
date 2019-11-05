@@ -1,63 +1,14 @@
-	let textarea2 = {
-		"axios": {
-			"baseURL": function({
-				_req
-			}) {
-				if (_req.header.origin == 'http://oss-bulletin.test.glsx.com.cn') {
-					return "http://qcdidicb.glsx.net:7060"
-				} else if (_req.header.origin.startsWith('http://192.168')) {
-					return "http://192.168.3.206:8923"
-				} else if (_req.header.origin.startsWith('http://oss-bulletin.glsx.com.cn')) {
-					return "http://didicb.glsx.com.cn"
-				} else if (_req.header.origin.startsWith('http://localhost')) {
-					return "http://qcdidicb.glsx.net:7060"
-				} else {
-					return "http://192.168.3.171:7300/mock/5cb0021e4bd1a108f923bf92/oss-notice/"
-				}
-			},
-			"fileUploadURL": function({
-				_req
-			}) {
-				if (_req.header.origin == 'http://oss-bulletin.test.glsx.com.cn') {
-					return "http://dj.test.glsx.com.cn/web-dj-site"
-				} else if (_req.header.origin.startsWith('http://192.168')) {
-					return "http://192.168.3.206:8923"
-				} else if (_req.header.origin.startsWith('http://oss-bulletin.glsx.com.cn')) {
-					return "http://gps.cgacar.com/web-dj-site"
-				} else if (_req.header.origin.startsWith('http://localhost')) {
-					return "http://192.168.2.89:8091"
-				} else {
-					return "http://192.168.3.171:7300/mock/5cb0021e4bd1a108f923bf92/oss-notice/"
-				}
-			},
-			"whiteList": [
-				'router',
-				'router?method=glsx.accounts.admin.bulletin.create',
-				'router?method=glsx.accounts.admin.bulletin.create.check',
-				'glsx.accounts.admin.bulletin.search',
-				'glsx.accounts.bulletin.push.search',
-				'glsx.accounts.admin.bulletin.complete.search',
-				'glsx.accounts.bulletin.publish.cancel',
-				'glsx.accounts.admin.merchant.group.dict',
-				'glsx.accounts.admin.merchant.getall',
-				'glsx.accounts.bulletin.message.detail',
-				'glsx.accounts.admin.bulletin.create',
-				'glsx.accounts.admin.bulletin.detail'
-			],
-			"timeout": 15000,
-			"result": {
-				"data_key": "data",
-				"message_key": "message",
-				"code_key": "code",
-				"code_success_value": "0",
-				"code_message_map": {}
-			}
-		},
-		"css_url": 'http://oss-config.test.glsx.com.cn/mock/5be17454f31545347559d499/config/index.css'
-	}
-	
+	let textarea2 = {'aa':111}
 	//自定义textarea
 		document.getElementById('textarea').value= '';
+
+	//获取列表数据
+		function getList(){
+			let xhr = new XhrRequest();
+			xhr.xhrRequest('http://localhost:5555/config/list',{'method':'get'},null,(res)=>{
+				console.log(res,'res');
+			})
+		}
 
 	//ace web编辑器 
 		function AceEditor(params){
@@ -132,8 +83,8 @@
 				if(typeof(this.submitText) != 'function'){
 					AceEditor.prototype.submitText = (data) => {
 						let reqData = JSON.stringify({'json':data})
-						let xhr = new XHR();
-						xhr.xhrRequest(this.URL,reqData,(res)=>{
+						let xhr = new XhrRequest();
+						xhr.xhrRequest(this.URL,{'method':'post'},reqData,(res)=>{
 							// console.log(res,'res');
 							this.callback(res)
 						})
@@ -141,11 +92,12 @@
 				}
 			}
 		}
-
-		function XHR(){
-			if(this instanceof XHR){
+	
+	//xhr
+		function XhrRequest(){
+			if(this instanceof XhrRequest){
 				if(typeof(this.creatXHR) != 'function'){
-					XHR.prototype.creatXHR = () => {
+					XhrRequest.prototype.creatXHR = () => {
 						if(typeof XMLHttpRequest != 'undefined'){
 							return new XMLHttpRequest()
 						}else if(typeof ActiveXObject != 'undefined'){
@@ -164,12 +116,12 @@
 								return new ActiveXObject(arguments.callee.activeXString);
 							}
 						}else{
-							throw new Error('No XHR object available.') 
+							throw new Error('No XhrRequest object available.') 
 						}
 					}
 				}
 				if(typeof(this.xhrRequest) != 'function'){
-					XHR.prototype.xhrRequest = (url,body,callback) => {
+					XhrRequest.prototype.xhrRequest = (url,options,body,callback) => {
 						let xhr = this.creatXHR();
 						xhr.onreadystatechange = ()=> {
 							if(xhr.readyState == 4) {
@@ -182,17 +134,18 @@
 								}
 							}
 						}
-						xhr.open('post',url,true)
+						xhr.open(options.method,url,true)
 						// xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded')
-						xhr.setRequestHeader('Content-Type','application/json')
+						options.method == 'post' && xhr.setRequestHeader('Content-Type','application/json')
 						xhr.send(body)
 					}
 				}
 			}else{
-				throw Error('This function is requires new! ep: new XHR()');
+				throw Error('This function is requires new! ep: new XhrRequest()');
 			}
 		}
-
+	
+	//初始化编辑器
 		const aceEditor = new AceEditor({
 			'ace':ace,
 			'url':'http://localhost:5555/config/add',

@@ -15,9 +15,8 @@ var dataObj;
 // 		next();
 // })
 
-
 // 连接的是我本地数据库中的config库
-const ConfigDB = mongoose.connect('mongodb://localhost:27017/config',{useNewUrlParser:true});
+const ConfigDB = mongoose.connect(global.mongodbUrl+'/config',{useNewUrlParser:true});
 
 // 每一个Schema对应MongoDB中的一个集合（collection）。Schema中定义了集合中文档（document）的格式。
 var ConfigSchema = new mongoose.Schema({
@@ -51,7 +50,8 @@ const ConfigLists = mongoose.model('configList',ConfigSchema);
 //新增 配置
 router.post('/add',unlencoderParser,(req,res,next) => {
 	const _req = req;
-	const headersType = req.headers['content-type'];
+	// const headersType = _req.headers['content-type'];
+	const headersType = _req.get('content-type');
 	// console.log(headersType,'');
 	if( headersType == 'application/x-www-form-urlencoded'){
 		//处理form-data格式的数据  
@@ -85,25 +85,27 @@ router.post('/add',unlencoderParser,(req,res,next) => {
 		return;
 	}else if( headersType == 'application/json'){
 		let str = ''
+		//处理payload格式的数据 用on data end
 		_req.on('data',(chunk)=>{
-			//处理payload格式的数据 用on data end
 				str = chunk.toString();
+				console.log(str,'str')
+				//处理dataObj
 				dataObj = eval('('+JSON.parse(str).json+')')
 				initObj(dataObj,_req)
+				// console.log(JSON.stringify(dataObj),'dataObj');
 		})
 		_req.on('end',()=>{
 			var response = {
 				'username':_req.body.userName,
-				'textarea':dataObj,
+				'textarea':str,
 			}
-			console.log(JSON.stringify(dataObj),'dataObj');
 			//插入数据库
 				const newConfigs = new ConfigLists({
 					userId:0,
 					project:1,
 					method:'post',
 					url:'/addConfig',
-					mode:JSON.stringify(dataObj),
+					mode:JSON.stringify(str),
 					description:'暂时写死',
 				})
 				const name = _req.body.name;
@@ -125,9 +127,16 @@ router.post('/add',unlencoderParser,(req,res,next) => {
 })
 //查询配置项
 router.get('/list',(req,res)=>{
-	console.log(req.query,'getConfig');
+	console.log(req.headers.origin,'getConfig');
 	ConfigLists.find(req.query,(err,docs)=>{
 		if(docs.length > 0) {
+			docs.forEach(item => {
+				console.log(typeof item.mode,'docsItem aaa');
+				docsItem = eval('('+JSON.parse(item.mode)+')')
+				// if(docsItem){
+				// 	var aa = initObj(docsItem,req)
+				// }
+			})
 			res.send({isSuccess: true, message: 'success',data:docs})
 		} else {
 			res.send({isSuccess: false, message: 'error',data:[]})
@@ -161,11 +170,12 @@ router.get('/update',(req,res)=>{
 
 
 function initObj(obj,_req){
-	// console.log(typeof obj,'');
+	console.log(typeof obj,'init obj');
 	for(var key in obj){
 		let value = obj[key];
+		// console.log(key,'init key')
 		if(typeof value === 'object'){
-			initObj(value,_req)
+			obj[key] = initObj(value,_req)
 		}else{
 			if(typeof value === 'function'){
 				_req.header = _req.headers;
@@ -175,6 +185,7 @@ function initObj(obj,_req){
 			}
 		}
 	}
+	return obj;
 }
 
 module.exports = router

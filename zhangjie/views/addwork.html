@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<title>
+			<%= title %>
+		</title>
+		<link rel="stylesheet" href="stylesheets/style.css" />
+		<link rel="stylesheet" href="stylesheets/bootstrap.min.css" media="screen">
+		<style type="text/css">
+			.m15 {
+				margin: 15px;
+			}
+
+			.tc {
+				text-align: center;
+				font-size: 18px;
+				font-weight: 600;
+			}
+		</style>
+	</head>
+	<body screen_capture_injected="true">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">LOGO</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+		<%- message %>
+		<div class="panel panel-default content">
+			<div class="panel-heading">Add Work</div>
+			<div class="addWorkBox">
+				<form class="" role="form" method="post" onsubmit="return false">
+					<div class="form-group">
+						<label for="exampleInputEmail1">work name</label>
+						<input type="text" class="form-control" id="wName" placeholder="work name">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">work address</label>
+						<input type="text" class="form-control" id="wAddress" placeholder="work address">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">work type</label>
+						<input type="text" class="form-control" id="wType" placeholder="work type">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">work image_url</label>
+						<input type="text" class="form-control" id="wImage" placeholder="work image_url">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">work description</label>
+						<textarea type="text" class="form-control" id="wDesc" placeholder="work description"></textarea>
+					</div>
+					<button class="btn btn-default" id="addWork">save</button>
+				</form>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="javascripts/jquery.min.js"></script>
+		<script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#addWork").click(function() {
+					var wName = $("#wName").val();
+					var wAddress = $("#wAddress").val();
+					var wType = $("#wType").val();
+					var wImage = $("#wImage").val();
+					var wDesc = $("#wDesc").val();
+
+					if (!wName) {
+						$("#wName").css("border", "1px solid red");
+						return false;
+					}
+
+					if (!wAddress) {
+						$("#wAddress").css("border", "1px solid red");
+						return false;
+					}
+					if (!wType) {
+						$("#wType").css("border", "1px solid red");
+						return false;
+					}
+
+					var o = {};
+					o.name = wName;
+					o.address = wAddress;
+					o.description = wDesc;
+					o.type = wType;
+					o.image_url = wImage;
+
+					$.ajax({
+						url: '/addwork',
+						type: 'post',
+						data: o,
+						success: function(data, status) {
+							if (status == 'success') {
+								location.href = '/';
+							}
+						},
+						error: function(data, err) {
+							console.log(err);
+							location.href = 'register';
+						}
+					});
+
+				});
+			});
+		</script>
+	</body>
+	</head>
+</html>

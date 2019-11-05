@@ -1,9 +1,9 @@
-require('./mongoose')
+require('./mongoose');
 const http = require('http');
 const path = require('path');
 const express =require('express');
 
-const 	app = express(),
+const	app = express(),
 		configRoute = require('./routes/config');
 		userRoute = require('./routes/user');
 //设置所有请求的 跨域请求
@@ -15,19 +15,20 @@ const 	app = express(),
 			res.header("Content-Type", "application/json;charset=utf-8");
 			next();
 	})
-app.use('/js',express.static('js'))
-// app.use('/config',configRoute)
-app.use('/user',userRoute)
-// app.use(bodyParser.json())
+	// app.use(bodyParser.json()) //针对post请求，body处理
 
+//使用
+	app.use('/js',express.static(path.join(__dirname ,'../web/js')))
+	app.use('/config',configRoute)
+	app.use('/user',userRoute)
 
 //获取首页 index.html展示
 	app.get('/',(req,res) => {
 		res.header("Content-Type", "text/html; charset=utf-8");
-		res.sendFile(__dirname +'/index.html')
+		res.sendFile(path.join(__dirname ,'../web/index.html'))
 	})
 
-
+//启动服务
 let server = app.listen(5555, () => {
 	let host = server.address().address;
 	let port = server.address().port;

@@ -1,0 +1,109 @@
+body {
+  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+*{
+	padding:0;
+	margin:0;
+}
+a {
+  color: #00B7FF;
+}
+
+.content{
+	width:1024px;
+	margin:15px auto;
+}
+.workList{
+	padding:0 15px;
+}
+.work_ul li{
+	list-style: none;
+	line-height:2;
+}
+.work_ul .time{
+	float: right;
+}
+.detail_info{
+	padding:15px;
+}
+.detail_info .info_ul{
+	padding:0 10px;
+}
+.info_ul li{
+	list-style:none;
+	line-height:2;
+	font-size:14px;
+}
+.info_ul .label{
+	font-weight:bold;
+	color:#333;
+	font-size:14px;
+}
+
+.message{
+	padding:15px;
+}
+.msg_head{
+	font-size:18px;
+	font-weight:bold;
+	border-bottom:1px solid #ddd;
+	line-height:2;
+}
+.msg_line{
+	border-bottom:1px dashed #ddd;
+	padding:15px 0;
+}
+.msg_top{
+	background:#f2f2f2;
+	padding:10px;
+	border-radius:2px;
+}
+.msg_top .time{
+	float:right;
+}
+.msgBox{
+	padding:10px;
+}
+.message_box{
+	margin-top:30px;
+}
+
+.searchbox{
+	padding:15px 10px;
+}
+
+.nav_right{
+	float:right !important;
+}
+.container-fluid{
+	width:1024px;
+	margin:0 auto;
+}
+
+.banner{
+	text-align:center;
+	width:1024px;
+	margin:0 auto;
+}
+.banner img{
+	margin:0 auto;
+}
+
+.addWorkBox{
+	padding:15px;
+}
+
+.avatar_box .thumbnail{
+	width:200px;
+	height:200px;
+	margin:0 auto;
+	border-radius:100%;
+}
+.avatar_box img{
+	width:100%;
+	height:100%;
+	border-radius:100%;
+}
+.avatar_box .info_ul{
+	text-align:center;
+}

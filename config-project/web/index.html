@@ -8,20 +8,24 @@
 
 </head>
 <body>
-	<h1>ACE</h1>
+	<h1>ACE 输入:</h1>
 	<div id="editor" style="height: 800px;width:800px;"></div>
 
-	<h1>TEXTAREA</h1>
-	<form action="http://localhost:5555/config/add" method="POST"  target="nm_iframe">
-		<label for="name">用户名:</label>
-		<input type="text" id="name" name='userName' value="admin">
-		<br>
-		<label for="textarea">配置内容json字符串:</label>
-		<textarea rows="30" cols="100" type="textarea" id="textarea" name='json'></textarea>
-		<br>
-		<input type="submit" value="提交" >
-	</form>
+	<div style='display: none;'>
+		<h1>TEXTAREA</h1>
+		<form action="http://localhost:5555/config/add" method="POST"  target="nm_iframe">
+			<label for="name">用户名:</label>
+			<input type="text" id="name" name='userName' value="admin">
+			<br>
+			<label for="textarea">配置内容json字符串:</label>
+			<textarea rows="30" cols="100" type="textarea" id="textarea" name='json'></textarea>
+			<br>
+			<input type="submit" value="提交" >
+		</form>
+	</div>
 
+	<button onclick="getList()">获取列表</button>
+	<h3>输出结果：</h3>
 	<iframe 
 		id="id_iframe" name="nm_iframe" 
 		style="margin-top:20px;width: 800px;height: 500px;"

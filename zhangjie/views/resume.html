@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<title>
+			<%= title %>
+		</title>
+		<link rel="stylesheet" href="../stylesheets/bootstrap.min.css" media="screen">
+		<link rel="stylesheet" href="../stylesheets/style.css" />
+	</head>
+	<body screen_capture_injected="true">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">LOGO</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+					<ul class="nav navbar-nav">
+						<li class="active"><a href="#">HOME <span class="sr-only">(current)</span></a></li>
+					</ul>
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+		<div class="container">
+			<%- message %>
+
+			<div class="panel panel-default content">
+				<div class="panel-heading">worker resume detail</div>
+				<div class="detail_info avatar_box clearfix">
+					<div class="thumbnail">
+						<img src="../images/timg.jpg" alt="" />
+					</div>
+					<ul class="info_ul" id="detailInfo">
+						<li><span class="label">name: </span><span name="name"></span></li>
+						<li><span class="label">phone:</span><span name="phone"></span></li>
+						<li><span class="label">skill:</span><span name="skill"></span></li>
+						<li><span class="label">avatar:</span><span name="avatar"></span></li>
+						<li><span class="label">address:</span><span name="address"></span></li>
+						<li><span class="label">description:</span><span name="description"></span></li>
+					</ul>
+				</div>
+
+
+				<div class="message">
+					<div class="msg_head">leave a message</div>
+					<div id="messageList">
+						
+						<!-- <div class="msg_line">
+							<div class="msg_top clearfix">
+								<span class="time">2019-05-16</span>
+								<span class="name">jack</span>
+							</div>
+							<div class="msgBox">
+								It is very good
+							</div>
+						</div> -->
+						
+					</div>
+
+
+					<div class="message_box">
+						<div class="form-group">
+							<input type="text" class="form-control" placeholder="your name" id="msgName" />
+						</div>
+						<div class="form-group">
+							<textarea type="text" class="form-control" placeholder="your message" id="msgDesc"></textarea>
+						</div>
+						<button class="btn btn-default" id="leaveMessage">submit</button>
+					</div>
+
+				</div>
+
+
+			</div>
+
+		</div>
+
+		<script type="text/javascript" src="../javascripts/jquery.min.js"></script>
+		<script type="text/javascript" src="../javascripts/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				
+				var workDetail = {
+					
+					/*get message list*/
+					getMessageList:function(){
+						
+						var _url = window.location.href;
+						var o = _url.split('/');
+						var _id = o[o.length-1];
+						
+						$.ajax({
+							url:'/messageList',
+							method:'post',
+							data:{workId:_id},
+							success:function(res){
+								console.log(res);
+								var _html = '';
+								if(res&&res.length>0){
+									for(var i=0;i<res.length;i++){
+										var o = res[i];
+										var m = '<div class="msg_line">'
+										+ '<div class="msg_top clearfix">'
+										+ '<span class="time">'+ o.create_date +'</span>'
+										+ '<span class="name">'+ o.name +'</span>'
+										+ '</div>'
+										+ '<div class="msgBox">'
+										+ o.description
+										+ '</div>'
+										+ '</div>';
+										_html+=m;
+									}
+								}
+								$('#messageList').html(_html);
+							}
+						})
+					},
+					
+					/*绑定 DOM事件*/
+					bindEvent:function(){
+						$('#leaveMessage').on('click',function(){
+							var _name = $('#msgName').val();
+							var _desc = $('#msgDesc').val();
+							var params = {};
+							
+							if(!_name){
+								$("#msgName").css("border", "1px solid red");
+								return false;
+							}
+							
+							if(!_desc){
+								$("#msgDesc").css("border", "1px solid red");
+								return false;
+							}
+							
+							var _url = window.location.href;
+							var o = _url.split('/');
+							var _id = o[o.length-1];
+							
+							params.name = _name;
+							params.description = _desc;
+							params.workId = _id;
+							console.log(_id);
+							$.ajax({
+								url:'/leaveMessage',
+								type:'post',
+								data:params,
+								success:function(res){
+									location.reload();
+								}
+							})
+						});
+					},
+					
+					/*get work detail*/
+					getWorkInfo:function(){
+						var _url = window.location.href;
+						var o = _url.split('/');
+						var _id = o[o.length-1];
+						
+						$.ajax({
+							url:'/resume/info',
+							data:{id:_id},
+							type:'post',
+							success:function(res){
+								$('#detailInfo span').each(function(){
+									var _name = $(this).attr('name');
+									if(_name){
+										$(this).html(res[_name]);
+									}
+								});
+							}
+						})
+						
+						
+					},
+					
+					/*init*/
+					init:function(){
+						this.getMessageList();
+						this.bindEvent();
+						this.getWorkInfo();
+					}
+					
+				};
+				
+				
+				workDetail.init();
+				
+				
+				
+				
+			});
+		</script>
+	</body>
+	</head>
+</html>

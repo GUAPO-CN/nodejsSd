@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<title>
+			<%= title %>
+		</title>
+		<link rel="stylesheet" href="stylesheets/style.css" />
+		<link rel="stylesheet" href="stylesheets/bootstrap.min.css" media="screen">
+		<style type="text/css">
+			.m15 {
+				margin: 15px;
+			}
+
+			.tc {
+				text-align: center;
+				font-size: 18px;
+				font-weight: 600;
+			}
+		</style>
+	</head>
+	<body screen_capture_injected="true">
+		<nav class="navbar navbar-default">
+			<div class="container-fluid">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="#">LOGO</a>
+				</div>
+				<!-- Collect the nav links, forms, and other content for toggling -->
+				<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+
+				</div><!-- /.navbar-collapse -->
+			</div><!-- /.container-fluid -->
+		</nav>
+		<%- message %>
+		<div class="panel panel-default content">
+			<div class="panel-heading">Add Worker resume</div>
+			<div class="addWorkBox">
+				<form class="" role="form" method="post" onsubmit="return false">
+					<div class="form-group">
+						<label for="exampleInputEmail1">name:</label>
+						<input type="text" class="form-control" id="wName" placeholder="name">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">phone:</label>
+						<input type="text" class="form-control" id="wPhone" placeholder="phone">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">avatar:</label>
+						<input type="text" class="form-control" id="wAvatar" placeholder="avatar">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">skill:</label>
+						<input type="text" class="form-control" id="wSkill" placeholder="skill">
+					</div>
+					<div class="form-group">
+						<label for="exampleInputPassword1">address:</label>
+						<input type="text" class="form-control" id="wAddress" placeholder="address">
+					</div>
+					
+					<div class="form-group">
+						<label for="exampleInputPassword1">description:</label>
+						<textarea type="text" class="form-control" id="wDesc" placeholder="description"></textarea>
+					</div>
+					<button class="btn btn-default" id="addResume">save</button>
+				</form>
+			</div>
+		</div>
+
+		<script type="text/javascript" src="javascripts/jquery.min.js"></script>
+		<script type="text/javascript" src="javascripts/bootstrap.min.js"></script>
+		<script type="text/javascript">
+			$(function() {
+				$("#addResume").click(function() {
+					var wName = $("#wName").val();
+					var wPhone = $('#wPhone').val();
+					var wAvatar = $("#wAvatar").val();
+					var wSkill = $("#wSkill").val();
+					var wAddress = $("#wAddress").val();
+					var wDesc = $("#wDesc").val();
+
+					if (!wName) {
+						$("#wName").css("border", "1px solid red");
+						return false;
+					}
+					
+					if(!wPhone){
+						$("#wPhone").css("border", "1px solid red");
+						return false;
+					};
+					
+					if(!wSkill){
+						$("#wSkill").css("border", "1px solid red");
+						return false;
+					}
+
+					if (!wAddress) {
+						$("#wAddress").css("border", "1px solid red");
+						return false;
+					}
+
+					var o = {};
+					o.name = wName;
+					o.address = wAddress;
+					o.description = wDesc;
+					o.skill = wSkill;
+					o.avatar = wAvatar;
+					o.phone = wPhone;
+
+					$.ajax({
+						url: '/resume/add',
+						type: 'post',
+						data: o,
+						success: function(data, status) {
+							if (status == 'success') {
+								location.href = '/';
+							}
+						},
+						error: function(data, err) {
+							console.log(err);
+							//location.href = 'register';
+						}
+					});
+
+				});
+			});
+		</script>
+	</body>
+	</head>
+</html>
