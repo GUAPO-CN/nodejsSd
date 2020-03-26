@@ -3,7 +3,6 @@ const router = express.Router();
 const bodyParser = require('body-parser'),
 				unlencoderParser = bodyParser.urlencoded({extended:false});
 const mongoose = require('mongoose');
-var dataObj;
 
 //设置所有请求的 跨域请求 server.js已经全局设置
 // router.all('*',function(req,res,next){
@@ -84,20 +83,22 @@ router.post('/add',unlencoderParser,(req,res,next) => {
 			})
 		return;
 	}else if( headersType == 'application/json'){
-		let str = ''
+		var str = '',dataObj='';
 		//处理payload格式的数据 用on data end
 		_req.on('data',(chunk)=>{
-				str = chunk.toString();
-				console.log(str,'str')
-				//处理dataObj
-				dataObj = eval('('+JSON.parse(str).json+')')
-				initObj(dataObj,_req)
-				// console.log(JSON.stringify(dataObj),'dataObj');
+			// console.log(chunk,'chunk')
+			str = chunk.toString();
+			// console.log(str,'str')
+			dataObj = JSON.parse(str).json;
+			// console.log(dataObj,'dataObj')
+																																													//处理dataObj
+																																													// initObj(dataObj,_req)
+																																													// console.log(JSON.stringify(dataObj),'dataObj');
 		})
 		_req.on('end',()=>{
 			var response = {
 				'username':_req.body.userName,
-				'textarea':str,
+				'textarea':dataObj,
 			}
 			//插入数据库
 				const newConfigs = new ConfigLists({
@@ -105,7 +106,7 @@ router.post('/add',unlencoderParser,(req,res,next) => {
 					project:1,
 					method:'post',
 					url:'/addConfig',
-					mode:JSON.stringify(str),
+					mode:dataObj,
 					description:'暂时写死',
 				})
 				const name = _req.body.name;
@@ -127,22 +128,69 @@ router.post('/add',unlencoderParser,(req,res,next) => {
 })
 //查询配置项
 router.get('/list',(req,res)=>{
-	console.log(req.headers.origin,'getConfig');
+	console.log( req.headers,'domian')
+	console.log( req.originalUrl,'originalUrl')
+	console.log( req.subdomains,'subdomains')
+	console.log( req.baseUrl,'baseUrl')
 	ConfigLists.find(req.query,(err,docs)=>{
+		if(err) return res.send({isSuccess: false, message: 'error',data:false});
+		const sendArr = [];
 		if(docs.length > 0) {
-			docs.forEach(item => {
-				console.log(typeof item.mode,'docsItem aaa');
-				docsItem = eval('('+JSON.parse(item.mode)+')')
-				// if(docsItem){
-				// 	var aa = initObj(docsItem,req)
-				// }
+			docs.forEach((item,index) => {
+				// console.log(typeof item,'item 为object');
+
+				// console.log(typeof item.mode,'item.mode 为string');
+				let itemMode= eval('('+item.mode+')');
+				// console.log(typeof itemMode,'itemMode 为object');
+
+				// console.log(typeof itemMode.json,'itemMode.json 为string');
+				// let itemModeJson= eval('(' + itemMode.json + ')');
+				// console.log(typeof itemModeJson,'itemModeJson 为object');
+
+				sendArr.push(item);
+				if(itemMode){
+					let itemModeJsonRun = initObj(itemMode,req);
+					sendArr[index]['modes'] = itemModeJsonRun;
+				}
 			})
-			res.send({isSuccess: true, message: 'success',data:docs})
-		} else {
-			res.send({isSuccess: false, message: 'error',data:[]})
 		}
-	})
+		res.send({isSuccess: true, message: 'success',data:sendArr});
+	}).lean();
 })
+
+function initObj(obj,_req){
+	// console.log(typeof obj,'init obj');
+	for(var key in obj){
+		let value = obj[key];
+		// console.log(key,'init key')
+		if(typeof value === 'object'){
+			obj[key] = initObj(value,_req)
+		}else{
+			if(typeof value === 'function'){
+				// _req.headers['origin'] = (_req.headers['origin'] ?_req.headers['origin'] : _req.headers['referer']) ;
+
+				// _req.header = _req.headers;
+				// let domain = _req.headers['referer'].match(/^(\w+:\/\/)?([^\/]+)/i);
+				// domain = domain ? domain[2].split(':')[0].split('.').slice(-2).join('.') : null;
+				// console.log( _req.headers,'domian')
+				// console.log(_req.header,'_req.header');
+				// console.log(_req.ip.match(/\d+\.\d+\.\d+\.\d+/),'_req.ip');
+				// console.log(_req.get('Origin'),'_req.header');
+				if(!_req.header || !_req.header.origin){
+					obj[key] = '没有origin'
+					return 
+				}else{
+					let result = value({_req})
+					// console.log(result,'initObj value result'); 
+					obj[key] = result;
+				}
+			}
+		}
+	}
+	return obj;
+}
+
+
 //删除配置项
 router.get('/delete',(req,res)=>{
 	console.log(req.query,'getConfig');
@@ -167,25 +215,5 @@ router.get('/update',(req,res)=>{
 		}
 	})
 })
-
-
-function initObj(obj,_req){
-	console.log(typeof obj,'init obj');
-	for(var key in obj){
-		let value = obj[key];
-		// console.log(key,'init key')
-		if(typeof value === 'object'){
-			obj[key] = initObj(value,_req)
-		}else{
-			if(typeof value === 'function'){
-				_req.header = _req.headers;
-				let result = value({_req})
-				// console.log(result,'initObj value result'); 
-				obj[key] = result;
-			}
-		}
-	}
-	return obj;
-}
 
 module.exports = router

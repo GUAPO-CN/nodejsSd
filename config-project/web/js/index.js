@@ -6,7 +6,7 @@
 		function getList(){
 			let xhr = new XhrRequest();
 			xhr.xhrRequest('http://localhost:5555/config/list',{'method':'get'},null,(res)=>{
-				console.log(res,'res');
+				console.log(JSON.parse(res),'res');
 			})
 		}
 
